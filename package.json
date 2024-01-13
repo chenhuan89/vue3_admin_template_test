@@ -14,7 +14,8 @@
     "format": "prettier --write \"./**/*.{html,vue,ts,js,json,md}\"",
     "lint:eslint": "eslint src/**/*.{ts,vue} --cache --fix",
     "lint:style": "stylelint src/**/*.{css,scss,vue} --cache --fix",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "commitlint": "commitlint --config commitlint.config.cjs -e -V"
   },
   "dependencies": {
     "pinia": "^2.1.7",
@@ -23,6 +24,8 @@
   },
   "devDependencies": {
     "@babel/eslint-parser": "^7.23.3",
+    "@commitlint/cli": "^18.4.4",
+    "@commitlint/config-conventional": "^18.4.4",
     "@rushstack/eslint-patch": "^1.6.1",
     "@tsconfig/node18": "^18.2.2",
     "@types/node": "^18.19.3",
