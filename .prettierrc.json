@@ -5,7 +5,7 @@
   "printWidth": 100,
   "bracketSpacing": true,
   "htmlWhitespaceSensitivity": "ignore",
-  "endOfLine": "auto",
-  "trailingComma": "all",
+  "endOfLine": "lf",
+  "trailingComma": "none",
   "tabWidth": 2
 }
