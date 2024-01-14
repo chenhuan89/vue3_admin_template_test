@@ -1,7 +1,7 @@
 // 导入createApp函数，用于创建Vue应用
 import { createApp } from 'vue'
 // 导入App组件
-import App from './App.vue'
+import App from '@/App.vue'
 // 导入ElementPlus
 import ElementPlus from 'element-plus'
 // 导入ElementPlus的样式文件
