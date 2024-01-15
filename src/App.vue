@@ -1,17 +1,20 @@
 <template>
   <div>
-    <h1>我是APP根组件</h1>
-    <h1>新增代码</h1>
-    <test></test>
-  </div>
-  <div>
-    <el-button type="primary" size="default" :icon="Plus">Default</el-button>
+    <h1 style="margin: 0">测试SVG</h1>
+    <br />
+    <SvgIcon name="home" />
+    <pagination></pagination>
   </div>
 </template>
 
 <script setup lang="ts" name="t1">
-import { Plus } from '@element-plus/icons-vue'
-import test from '@/components/test.vue'
+import SvgIcon from '@/components/SvgIcon/index.vue'
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+div {
+  h1 {
+    color: $base-color;
+  }
+}
+</style>
