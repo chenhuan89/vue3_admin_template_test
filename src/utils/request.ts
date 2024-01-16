@@ -3,7 +3,7 @@ import { ElMessage } from 'element-plus'
 //创建axios 实例
 
 const request = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_API, //基础路径
+  baseURL: import.meta.env.VITE_APP_BASE_API, //基础路径
   timeout: 5000
 })
 //请求拦截器
@@ -47,4 +47,5 @@ request.interceptors.response.use(
     return Promise.reject(error)
   }
 )
+// 导出request函数
 export default request
