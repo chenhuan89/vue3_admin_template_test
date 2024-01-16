@@ -2,13 +2,13 @@
 import SvgIcon from './SvgIcon/index.vue'
 // 导入Pagination组件
 import Pagination from './Pagination/index.vue'
-import type { App, Component } from 'vue'
+import type { App } from 'vue'
 
 const allGlobalComponent = { SvgIcon, Pagination }
 
-interface GlobalComponents {
-  [key: string]: Component
-}
+// interface GlobalComponents {
+//   [key: string]: Component
+// }
 
 //对外暴露插件对象
 export default {
