@@ -14,6 +14,9 @@ import 'virtual:svg-icons-register'
 import gloalComponent from '@/components'
 // 导入样式文件
 import '@/styles/index.scss'
+// 导入路由
+import router from '@/router'
+
 // 创建一个应用实例
 const app = createApp(App)
 // 使用 ElementPlus 插件，并设置 locale 为 zhCn
@@ -22,4 +25,7 @@ app.use(ElementPlus, {
 })
 //安装自定义插件
 app.use(gloalComponent)
+//注册路由插件
+app.use(router)
+// 挂载应用
 app.mount('#app')
