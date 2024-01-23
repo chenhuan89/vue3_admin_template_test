@@ -18,7 +18,15 @@
             />
           </el-form-item>
           <el-form-item>
-            <el-button class="login_btn" type="primary" size="default">登录</el-button>
+            <el-button
+              :loading="loading"
+              class="login_btn"
+              type="primary"
+              size="default"
+              @click="login"
+            >
+              登录
+            </el-button>
           </el-form-item>
         </el-form>
       </el-col>
@@ -28,12 +36,49 @@
 
 <script setup lang="ts">
 import { User, Lock } from '@element-plus/icons-vue'
-import { reactive } from 'vue'
+import { reactive, ref } from 'vue'
+import { useRouter } from 'vue-router'
+import { ElNotification } from 'element-plus'
+//引入用户相关的小仓库
+import useUserStore from '@/stores/modules/user'
+let userStore = useUserStore()
+//获取路由器对象
+let $router = useRouter()
+//定义变量控制按钮加载效果
+let loading = ref(false)
 //收集表单数据
 let loginForm = reactive({
   username: 'admin',
-  password: '111111'
+  password: ''
 })
+//登录按钮的回调
+const login = async () => {
+  //开启加载效果
+  loading.value = true
+  //通知仓库发登录请求
+  //仓库发请求之后，仓库会返回一个token字符串
+  //请求成功->首页展示数据的地方
+  //请求失败->提示用户
+  try {
+    //保证登录成功
+    await userStore.userLogin(loginForm)
+    $router.push('/')
+    ElNotification({
+      type: 'success',
+      message: '登录成功'
+    })
+    //登录成功,取消加载效果
+    loading.value = false
+  } catch (error) {
+    //登录失败
+    loading.value = false
+    //提示用户
+    ElNotification({
+      type: 'error',
+      message: (error as Error).message
+    })
+  }
+}
 </script>
 
 <style scoped lang="scss">

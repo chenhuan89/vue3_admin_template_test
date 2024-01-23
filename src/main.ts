@@ -16,7 +16,8 @@ import gloalComponent from '@/components'
 import '@/styles/index.scss'
 // 导入路由
 import router from '@/router'
-
+//引入pinia仓库
+import pinia from './stores'
 // 创建一个应用实例
 const app = createApp(App)
 // 使用 ElementPlus 插件，并设置 locale 为 zhCn
@@ -25,7 +26,9 @@ app.use(ElementPlus, {
 })
 //安装自定义插件
 app.use(gloalComponent)
-//注册路由插件
+//注册路由组件
 app.use(router)
+//注册仓库组件
+app.use(pinia)
 // 挂载应用
 app.mount('#app')
