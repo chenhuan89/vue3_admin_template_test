@@ -36,7 +36,7 @@
 
 <script setup lang="ts">
 import { User, Lock } from '@element-plus/icons-vue'
-import { reactive, ref } from 'vue'
+import { reactive, ref, onMounted, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { ElNotification } from 'element-plus'
 //引入用户相关的小仓库
@@ -79,6 +79,20 @@ const login = async () => {
     })
   }
 }
+//当按下回车键
+const keyDown = (e: KeyboardEvent) => {
+  if (e.code === 'Enter' || e.code === 'NumpadEnter') {
+    login()
+  }
+}
+//当页面销毁的时候，取消全局事件监听
+onUnmounted(() => {
+  window.removeEventListener('keydown', keyDown)
+})
+//页面加载的时候，添加全局事件监听
+onMounted(() => {
+  window.addEventListener('keydown', keyDown)
+})
 </script>
 
 <style scoped lang="scss">
