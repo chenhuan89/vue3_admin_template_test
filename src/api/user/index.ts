@@ -1,7 +1,7 @@
 //统一管理项目用户相关的接口
 import request from '@/utils/request'
 
-import type { loginForm, loginResponse, userResponseData } from './type'
+import type { loginForm, loginResponseDate, userResponseData } from './type'
 //统一管理接口
 
 enum API {
@@ -11,7 +11,7 @@ enum API {
 //对外暴露请求函数
 //登录接口方法
 export const reqLogin = (data: loginForm) => {
-  return request.post<any, loginResponse>(API.LOGIN_URL, data)
+  return request.post<any, loginResponseDate>(API.LOGIN_URL, data)
 }
 //获取用户信息接口
 export const reqUserInfo = () => {

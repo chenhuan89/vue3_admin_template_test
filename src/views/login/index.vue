@@ -34,7 +34,7 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup lang="ts" name="Login">
 import { User, Lock } from '@element-plus/icons-vue'
 import { reactive, ref, onMounted, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
