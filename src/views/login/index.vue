@@ -3,13 +3,13 @@
     <el-row>
       <el-col :span="12" :xs="0"></el-col>
       <el-col :span="12" :xs="24">
-        <el-form class="login_form">
+        <el-form class="login_form" :model="loginForm" :rules="rules" ref="loginForms">
           <h1>Hello</h1>
           <h2>欢迎来到</h2>
-          <el-form-item>
+          <el-form-item prop="username">
             <el-input :prefix-icon="User" v-model="loginForm.username" />
           </el-form-item>
-          <el-form-item>
+          <el-form-item prop="password">
             <el-input
               :prefix-icon="Lock"
               show-password
@@ -39,9 +39,13 @@ import { User, Lock } from '@element-plus/icons-vue'
 import { reactive, ref, onMounted, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { ElNotification } from 'element-plus'
+//引入获取当前时间的函数
+import { getTime } from '@/utils/time'
 //引入用户相关的小仓库
 import useUserStore from '@/stores/modules/user'
 let userStore = useUserStore()
+//获取el-form组件
+let loginForms = ref()
 //获取路由器对象
 let $router = useRouter()
 //定义变量控制按钮加载效果
@@ -49,10 +53,12 @@ let loading = ref(false)
 //收集表单数据
 let loginForm = reactive({
   username: 'admin',
-  password: ''
+  password: '111111'
 })
 //登录按钮的回调
 const login = async () => {
+  //保证表单验证通过
+  await loginForms.value.validate()
   //开启加载效果
   loading.value = true
   //通知仓库发登录请求
@@ -65,7 +71,8 @@ const login = async () => {
     $router.push('/')
     ElNotification({
       type: 'success',
-      message: '登录成功'
+      message: '登录成功',
+      title: `Hi,${getTime()}好`
     })
     //登录成功,取消加载效果
     loading.value = false
@@ -78,6 +85,15 @@ const login = async () => {
       message: (error as Error).message
     })
   }
+}
+//定义表单校验规则函数
+const rules = {
+  username: [
+    { required: true, min: 5, max: 10, message: '用户名不得少于5位', trigger: 'blur' }
+  ],
+  password: [
+    { required: true, min: 6, max: 15, message: '长度不得少于6位', trigger: 'change' }
+  ]
 }
 //当按下回车键
 const keyDown = (e: KeyboardEvent) => {
