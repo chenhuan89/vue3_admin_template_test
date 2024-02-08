@@ -86,14 +86,37 @@ const login = async () => {
     })
   }
 }
+//自定义规则用户名函数
+const validatorUsername = (rule: any, value: string, callback: any) => {
+  //rule:即为校验规则对象
+  //value:即为表单元素的文本内容
+  //callback:规则函数 如果符合条件放行,反之注入错误提示信息
+  if (value.length < 5 || value.length > 18) {
+    //校验失败
+    callback(new Error('账号长度必须大于5位小于18位'))
+  } else {
+    callback()
+  }
+}
+//自定义规则密码函数
+const validatorPassword = (rule: any, value: string, callback: any) => {
+  //rule:即为校验规则对象
+  //value:即为表单元素的文本内容
+  //callback:规则函数 如果符合条件放行,反之注入错误提示信息
+  if (value.length < 6 || value.length > 18) {
+    //校验失败
+    callback(new Error('密码长度必须大于6位小于18位'))
+  } else {
+    callback()
+  }
+}
 //定义表单校验规则函数
 const rules = {
   username: [
-    { required: true, min: 5, max: 10, message: '用户名不得少于5位', trigger: 'blur' }
+    // { required: true, min: 5, max: 10, message: '用户名不得少于5位', trigger: 'blur' }
+    { trigger: 'change', validator: validatorUsername }
   ],
-  password: [
-    { required: true, min: 6, max: 15, message: '长度不得少于6位', trigger: 'change' }
-  ]
+  password: [{ trigger: 'change', validator: validatorPassword }]
 }
 //当按下回车键
 const keyDown = (e: KeyboardEvent) => {
