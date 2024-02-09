@@ -9,12 +9,13 @@
 
 //滚动条背景颜色设置
 ::-webkit-scrollbar-track {
-    background: $base-menu-background;
+    // background: $base-menu-background;
+    background: yellowgreen;
 }
 
 //滚动条样式设置
 ::-webkit-scrollbar-thumb {
-    width: 10px;
+    width: 8px;
     background: #ccc;
     border-radius: 10px;
 }
