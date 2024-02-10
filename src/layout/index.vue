@@ -1,7 +1,9 @@
 <template>
   <div class="layout_container">
     <!-- 左侧菜单 -->
-    <div class="layout_slider">123</div>
+    <div class="layout_slider">
+      <Logo />
+    </div>
     <!-- 顶部导航 -->
     <div class="layout_tabbar">457</div>
     <!-- 内容展示区 -->
@@ -11,7 +13,10 @@
   </div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+//引入Logo子组件
+import Logo from './logo/index.vue'
+</script>
 
 <style lang="scss" scoped>
 .layout_container {
@@ -42,7 +47,7 @@
     left: $base-menu-width;
     padding: 20px;
     overflow: auto;
-    border-radius: 10px;
+    // border-radius: 10px;
   }
 }
 </style>
