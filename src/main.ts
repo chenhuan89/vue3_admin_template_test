@@ -17,12 +17,12 @@ import '@/styles/index.scss'
 // 导入路由
 import router from '@/router'
 //引入pinia仓库
-import pinia from './stores'
+import pinia from './store'
 // 创建一个应用实例
 const app = createApp(App)
 // 使用 ElementPlus 插件，并设置 locale 为 zhCn
 app.use(ElementPlus, {
-  locale: zhCn
+    locale: zhCn
 })
 //安装自定义插件
 app.use(gloalComponent)
