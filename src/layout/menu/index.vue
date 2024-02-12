@@ -1,5 +1,5 @@
 <template>
-    <template v-for="(item, index) in menuList" :key="item.path">
+    <template v-for="item in menuList" :key="item.path">
         <!-- 没有子路由 -->
         <template v-if="!item.children">
             <el-menu-item :index="item.path" v-if="!item.meta.hidden" @click="goRoute">
@@ -16,6 +16,7 @@
             <el-menu-item
                 :index="item.children[0].path"
                 v-if="!item.children[0].meta.hidden"
+                @click="goRoute"
             >
                 <template #title>
                     <el-icon>
@@ -34,23 +35,27 @@
                 <span>{{ item.meta.title }}</span>
             </template>
             <!-- 递归调用-->
-            <Menu :menuList="item.children" />
+            <Menu_ :menuList="item.children" />
         </el-sub-menu>
     </template>
 </template>
 
 <script setup lang="ts">
+//引入路由器对下
+import { useRouter } from 'vue-router'
 //获取父组件传递过来的全部路由数组
 defineProps(['menuList'])
+let $router = useRouter()
 //点击菜单的回调
 const goRoute = (vc: any) => {
-    console.log(vc.index)
+    //路由跳转
+    $router.push(vc.index)
 }
 </script>
 <script lang="ts">
 export default {
     // eslint-disable-next-line vue/no-reserved-component-names
-    name: 'Menu'
+    name: 'Menu_'
 }
 </script>
 <style lang="scss" scoped></style>
