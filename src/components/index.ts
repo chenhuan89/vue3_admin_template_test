@@ -2,6 +2,8 @@
 import SvgIcon from './SvgIcon/index.vue'
 // 导入Pagination组件
 import Pagination from './Pagination/index.vue'
+//引入element-plus-icons
+import * as ElIcons from '@element-plus/icons-vue'
 import type { App, Component } from 'vue'
 
 const allGlobalComponent: GlobalComponents = { SvgIcon, Pagination }
@@ -18,5 +20,8 @@ export default {
         Object.keys(allGlobalComponent).forEach((key: string) => {
             app.component(key, allGlobalComponent[key])
         })
+        //将element-plus提供图标注册为全局组件
+        for (const [key, component] of Object.entries(ElIcons))
+            app.component(key, component)
     }
 }
