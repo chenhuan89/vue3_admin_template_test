@@ -16,11 +16,11 @@ export const constantRoute = [
         //登录成功以后展示数据的路由
         path: '/',
         component: () => import('@/layout/index.vue'),
-        name: 'Layout', // 命名路由
+        name: 'layout', // 命名路由
         meta: {
-            title: 'layout',
+            title: '',
             hidden: false, // 是否在菜单中隐藏 true:隐藏,false:不隐藏
-            icon: 'Avatar'
+            icon: ''
         },
         redirect: '/home',
         children: [
@@ -67,6 +67,7 @@ export const constantRoute = [
             hidden: false, // 是否在菜单中隐藏 true:隐藏,false:不隐藏
             icon: 'Lock'
         },
+        redirect: '/acl/user', //重定向
         children: [
             {
                 path: '/acl/user',
@@ -110,6 +111,7 @@ export const constantRoute = [
             hidden: false, // 是否在菜单中隐藏 true:隐藏,false:不隐藏
             icon: 'Goods'
         },
+        redirect: '/product/trademark', //重定向
         children: [
             {
                 path: '/product/trademark',
