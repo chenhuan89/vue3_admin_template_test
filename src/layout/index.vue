@@ -1,7 +1,7 @@
 <template>
     <div class="layout_container">
         <!-- 左侧菜单 -->
-        <div class="layout_slider" :class="{ fold: LayoutSetiingStore.fold ? true : false }">
+        <div class="layout_slider" :class="{ fold: layoutSetiingStore.fold ? true : false }">
             <Logo />
             <!-- 展示菜单 -->
             <!-- 滚动组件 -->
@@ -11,19 +11,19 @@
                     background-color="#001529"
                     text-color="white"
                     :default-active="$route.path"
-                    :collapse="LayoutSetiingStore.fold ? true : false"
+                    :collapse="layoutSetiingStore.fold ? true : false"
                 >
                     <Menu :menuList="userStore.menuRoutes" />
                 </el-menu>
             </el-scrollbar>
         </div>
         <!-- 顶部导航 -->
-        <div class="layout_tabbar" :class="{ fold: LayoutSetiingStore.fold ? true : false }">
+        <div class="layout_tabbar" :class="{ fold: layoutSetiingStore.fold ? true : false }">
             <!-- layoute组件顶部导航组件 -->
             <Tabbar />
         </div>
         <!-- 内容展示区 -->
-        <div class="layout_main" :class="{ fold: LayoutSetiingStore.fold ? true : false }">
+        <div class="layout_main" :class="{ fold: layoutSetiingStore.fold ? true : false }">
             <Main />
         </div>
     </div>
@@ -44,8 +44,8 @@ import Tabbar from './tabbar/index.vue'
 import useMainStore from '@/store/modules/user'
 let userStore = useMainStore()
 //获取layout组件相关小仓库
-import useLayoutSetiingStore from '@/store/modules/setting'
-let LayoutSetiingStore = useLayoutSetiingStore()
+import useLayOutSettingStore from '@/store/modules/setting'
+let layoutSetiingStore = useLayOutSettingStore()
 //获取路由对象实例
 let $route = useRoute()
 </script>
