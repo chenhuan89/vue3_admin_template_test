@@ -1,5 +1,7 @@
 import axios from 'axios'
 import { ElMessage } from 'element-plus'
+// 引入用户相关的仓库
+import useUserStore from '@/store/modules/user'
 //创建axios 实例
 
 const request = axios.create({
@@ -8,41 +10,43 @@ const request = axios.create({
 })
 //请求拦截器
 request.interceptors.request.use((config) => {
+    //获取用户相关的小仓库
+    const userStore = useUserStore()
+    if (userStore.token) {
+        config.headers.token = userStore.token
+    }
     return config
 })
 //响应拦截器
 request.interceptors.response.use(
     (response) => {
+        //response响应对象,data属性响应体,status属性响应码
+        //成功回调,简化数据
         return response.data
     },
     (error) => {
-        let msg = ''
-        const status = error.response.status
+        let message: string
+        const { status } = error.response
         switch (status) {
-            case 400:
-                msg = '请求错误'
-                break
             case 401:
-                msg = '未授权，请登录'
+                message = 'token失效,请重新登录'
                 break
             case 403:
-                msg = '拒绝访问'
+                message = '无权访问'
                 break
             case 404:
-                msg = '请求地址出错'
-                break
-            case 408:
-                msg = '请求超时'
+                message = '请求地址错误'
                 break
             case 500:
-                msg = '服务器内部错误'
+                message = '服务器出现问题'
                 break
             default:
-                msg = '无网络'
+                message = '网络出现问题'
+                break
         }
         ElMessage({
             type: 'error',
-            message: msg
+            message
         })
         return Promise.reject(error)
     }

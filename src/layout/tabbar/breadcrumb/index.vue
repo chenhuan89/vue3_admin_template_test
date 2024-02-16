@@ -14,7 +14,7 @@
         >
             <!-- 图标 -->
             <el-icon>
-                <component :is="item.meta.icon" />
+                <component :is="item.meta.icon" v-if="item.meta.icon" />
             </el-icon>
             <!-- 面包屑展示匹配路由的标题 -->
             <span>{{ item.meta.title }}</span>

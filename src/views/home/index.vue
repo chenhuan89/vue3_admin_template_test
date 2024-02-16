@@ -1,5 +1,17 @@
 <template>
-    <div><h1>我是一级路由展示登录成功以后的数据</h1></div>
+    <div>
+        <h1>我是一级路由展示登录成功以后的数据 {{ userStore.username }}</h1>
+    </div>
 </template>
-<script setup lang="ts" name="Home"></script>
+<script setup lang="ts" name="Home">
+// 引入生命周期函数
+import { onMounted } from 'vue'
+// // 获取仓库对象
+import useUserStore from '@/store/modules/user'
+let userStore = useUserStore()
+//首页挂载完毕发请求获取用户信息
+onMounted(() => {
+    userStore.userInfo()
+})
+</script>
 <style scoped lang="scss"></style>

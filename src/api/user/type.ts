@@ -33,3 +33,19 @@ export interface userResponseData {
     code: number
     data: user
 }
+export interface ResponseData {
+    code: number
+    message: string
+    ok: boolean
+}
+
+//定义获取用户信息返回数据类型
+export interface userInfoResponseData extends ResponseData {
+    data: {
+        routes: string[]
+        buttons: string[]
+        roles: string[]
+        name: string
+        avatar: string
+    }
+}
