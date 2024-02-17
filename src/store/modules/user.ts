@@ -49,8 +49,9 @@ const useUserStore = defineStore('user', {
                 this.avatar = result.data.checkUser.avatar
                 // console.log(this.username)
                 // console.log(this.avatar)
+                return 'ok'
             } else {
-                return Promise.reject(new Error('444'))
+                return Promise.reject('获取用户信息失败')
             }
         },
         userLogOut() {
