@@ -6,7 +6,7 @@ import { reqLogin, reqUserInfo } from '@/api/user'
 import type { loginForm, loginResponseDate } from '@/api/user/type'
 import type { UserState } from './types/type'
 //引入操作本地存储的工具方法
-import { SET_TOKEN, GET_TOKEN } from '@/utils/token'
+import { SET_TOKEN, GET_TOKEN, REMOVE_TOKEN } from '@/utils/token'
 //引入路由
 import { constantRoute } from '@/router/routes'
 // 创建用户小仓库
@@ -47,11 +47,19 @@ const useUserStore = defineStore('user', {
                 //仓库存储用户信息
                 this.username = result.data.checkUser.username
                 this.avatar = result.data.checkUser.avatar
-                console.log(this.username)
-                console.log(this.avatar)
+                // console.log(this.username)
+                // console.log(this.avatar)
             } else {
                 return Promise.reject(new Error('444'))
             }
+        },
+        userLogOut() {
+            // TODO 目前没有mock接口
+            //清除仓库中的数据
+            this.token = ''
+            this.username = ''
+            this.avatar = ''
+            REMOVE_TOKEN()
         }
     },
     getters: {}

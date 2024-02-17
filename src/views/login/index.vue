@@ -26,7 +26,7 @@
 <script setup lang="ts" name="Login">
 import { User, Lock } from '@element-plus/icons-vue'
 import { reactive, ref, onMounted, onUnmounted } from 'vue'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 import { ElNotification } from 'element-plus'
 //引入获取当前时间的函数
 import { getTime } from '@/utils/time'
@@ -37,6 +37,7 @@ let userStore = useUserStore()
 let loginForms = ref()
 //获取路由器对象
 let $router = useRouter()
+let $route = useRoute()
 //定义变量控制按钮加载效果
 let loading = ref(false)
 //收集表单数据
@@ -57,7 +58,12 @@ const login = async () => {
     try {
         //保证登录成功
         await userStore.userLogin(loginForm)
-        $router.push('/')
+        //判断登录的时候,路径当中是否有query参数
+        let redirect = $route.query.redirect as string
+        //登录成功之后,跳转到指定页面
+        //如果登录的时候,路径当中没有query参数,那么登录成功之后,跳转到首页
+        //如果登录的时候,路径当中有query参数,那么登录成功之后,跳转到query参数所指定的路径
+        $router.push({ path: redirect || '/' })
         ElNotification({
             type: 'success',
             message: '登录成功',
