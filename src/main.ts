@@ -18,6 +18,8 @@ import '@/styles/index.scss'
 import router from '@/router'
 //引入pinia仓库
 import pinia from '@/store'
+//引入路由鉴权
+import '@/permisstion'
 // 创建一个应用实例
 const app = createApp(App)
 // 使用 ElementPlus 插件，并设置 locale 为 zhCn
