@@ -38,7 +38,6 @@ router.beforeEach(async (to, from, next) => {
                 // 有用户信息放行
                 next()
             } else {
-                console.log('仓库当中没有用户信息')
                 // 没有用户信息,在守卫这里发请求获取用户信息
                 try {
                     //获取用户信息
@@ -47,7 +46,7 @@ router.beforeEach(async (to, from, next) => {
                 } catch (error) {
                     // token过期获取不到用户信息
                     // 用户手动修改信息
-                    userStore.userLogOut()
+                    await userStore.userLogOut()
                     next({ path: '/login', query: { redirect: to.path } })
                 }
             }

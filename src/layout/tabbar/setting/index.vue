@@ -48,10 +48,10 @@ const fullScreen = () => {
     }
 }
 // 退出按钮点击回调
-const logOut = () => {
+const logOut = async () => {
     // 退出登录逻辑
     // 1. 清除用户信息
-    userStore.userLogOut()
+    await userStore.userLogOut()
     // 2. 跳转到登录页
     $router.push({ path: '/login', query: { redirect: $route.path } })
 }

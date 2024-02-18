@@ -1,9 +1,8 @@
 //创建用户相关的小仓库
 import { defineStore } from 'pinia'
 //引入接口
-import { reqLogin, reqUserInfo } from '@/api/user'
-//引入数据类型
-import type { loginForm, loginResponseDate } from '@/api/user/type'
+import { reqLogin, reqUserInfo, reqLogOut } from '@/api/user'
+
 import type { UserState } from './types/type'
 //引入操作本地存储的工具方法
 import { SET_TOKEN, GET_TOKEN, REMOVE_TOKEN } from '@/utils/token'
@@ -24,14 +23,14 @@ const useUserStore = defineStore('user', {
     // 异步|逻辑
     actions: {
         //用户登录的方法
-        async userLogin(data: loginForm) {
+        async userLogin(data: any) {
             //用户登录的方法
-            const result: loginResponseDate = await reqLogin(data)
+            const result: any = await reqLogin(data)
             //登录请求:成功200->token
             //登录请求:失败201->登录失败错误的信息
             if (result.code === 200) {
                 //pinia仓库存储一下token
-                this.token = result.data.token as string
+                this.token = result.data as string
                 //本地持久存储token
                 SET_TOKEN(this.token)
                 return 'ok'
@@ -43,24 +42,29 @@ const useUserStore = defineStore('user', {
         async userInfo() {
             // 获取用户信息存储到仓库当中[用户头像,名称]
             const result = await reqUserInfo()
+
             if (result.code === 200) {
                 //仓库存储用户信息
-                this.username = result.data.checkUser.username
-                this.avatar = result.data.checkUser.avatar
-                // console.log(this.username)
-                // console.log(this.avatar)
+                this.username = result.data.name
+                this.avatar = result.data.avatar
                 return 'ok'
             } else {
-                return Promise.reject('获取用户信息失败')
+                return Promise.reject(new Error(result.message))
             }
         },
-        userLogOut() {
-            // TODO 目前没有mock接口
-            //清除仓库中的数据
-            this.token = ''
-            this.username = ''
-            this.avatar = ''
-            REMOVE_TOKEN()
+        async userLogOut() {
+            // 退出登录请求
+            const result: any = await reqLogOut()
+            if (result.code === 200) {
+                //清除仓库中的数据
+                this.token = ''
+                this.username = ''
+                this.avatar = ''
+                REMOVE_TOKEN()
+                return 'ok'
+            } else {
+                return Promise.reject(new Error(result.message))
+            }
         }
     },
     getters: {}
