@@ -9,7 +9,7 @@ import { viteMockServe } from 'vite-plugin-mock'
 // https://vitejs.dev/config/
 export default defineConfig(({ command, mode }: ConfigEnv) => {
     // 获取各种环境下对应的变量
-    let env = loadEnv(mode, process.cwd())
+    const env = loadEnv(mode, process.cwd())
     return {
         plugins: [
             vue(),
