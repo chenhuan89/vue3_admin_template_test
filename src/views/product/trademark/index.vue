@@ -42,6 +42,8 @@
                 layout 可以设置子组件布局调整
              -->
             <el-pagination
+                @current-change="getHasTradeMark"
+                @size-change="sizeChange"
                 v-model:current-page="pageNo"
                 v-model:page-size="limit"
                 :page-sizes="[3, 5, 10, 20]"
@@ -68,14 +70,28 @@ let limit = ref<number>(3)
 let total = ref<number>(0)
 //存储已有品牌的数据
 let trademarkArr = ref<Records>([])
-const getHasTradeMark = async () => {
+const getHasTradeMark = async (pager = 1) => {
+    pageNo.value = pager
     let result: TradeMarkResponseData = await reqHasTradeMark(pageNo.value, limit.value)
-    console.log(result)
+    // console.log(result)
     if (result.code == 200) {
         total.value = result.data.total
         trademarkArr.value = result.data.records
     }
 }
+// // 分页器页码发生变化的时候触发回调
+// // 对于当前页码发生变化自定义事件,组件pagination父组件回传了数据(当前页码)
+// const changePageNo = () => {
+//     // 当前页码发生变化重新请求数据
+//     getHasTradeMark()
+// }
+// 当下拉菜单发生变化的时候会触发回调
+// const sizeChange = () => {
+//     // 当前页码数据量发生变化 重置当前页码
+//     pageNo.value = 1
+//     // 当前页码发生变化重新请求数据
+//     getHasTradeMark()
+// }
 // 组件挂载完毕的钩子
 onMounted(() => {
     getHasTradeMark()
