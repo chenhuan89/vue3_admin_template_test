@@ -60,11 +60,11 @@
         <!-- 对话框组件:添加与修改已有品牌的业务使用结构 -->
         <!-- v-model 属性用于控制对话框的显示与隐藏 true显示,false隐藏 -->
         <el-dialog v-model="dialogFormVisible" :title="trademarkParams.id ? '修改商品' : '添加商品'">
-            <el-form>
-                <el-form-item label="品牌名称" label-width="80px">
+            <el-form :model="trademarkParams" :rules="rules" ref="formRef">
+                <el-form-item label="品牌名称" label-width="100px" prop="tmName">
                     <el-input placeholder="请你输入品牌名称" v-model="trademarkParams.tmName"></el-input>
                 </el-form-item>
-                <el-form-item label="品牌LOGO" label-width="80px">
+                <el-form-item label="品牌LOGO" label-width="100px" prop="logoUrl">
                     <!-- 
                         el-upload 组件上传图片
                         action 属性设置上传图片的地址 代理服务器需要带上/api
@@ -81,7 +81,7 @@
                     >
                         <img v-if="trademarkParams.logoUrl" :src="trademarkParams.logoUrl" class="avatar" />
                         <el-icon v-else class="avatar-uploader-icon">
-                            <Plus />
+                            <UploadFilled />
                         </el-icon>
                     </el-upload>
                 </el-form-item>
@@ -97,14 +97,14 @@
 
 <script setup lang="ts">
 //引入组合式API函数ref,onMounted
-import { ref, onMounted, reactive } from 'vue'
+import { ref, onMounted, reactive, nextTick } from 'vue'
 //引入商品管理api
 import { reqHasTradeMark, reqAddOrUpdateTradeMark } from '@/api/product/trademark'
 import { ElMessage } from 'element-plus'
 // 引入商品管理ts类型
 import type { Records, TradeMarkResponseData, TradeMark } from '@/api/product/trademark/type'
-// 引入element上传组件类型
-import type { UploadProps } from 'element-plus'
+// 引入element组件类型
+import type { UploadProps, FormRules } from 'element-plus'
 //当前页码
 let pageNo = ref<number>(1)
 //定义每一页展示多少条数据
@@ -120,6 +120,8 @@ let trademarkParams = reactive<TradeMark>({
     tmName: '',
     logoUrl: ''
 })
+// 获取el-from组件实例
+let formRef = ref()
 // 获取已有品牌数据接口,在任何情况下获取数据,调用此函数即可
 const getHasTradeMark = async (pager = 1) => {
     // 设置当前页码
@@ -161,18 +163,23 @@ const addTraderMark = () => {
     trademarkParams.id = undefined
     trademarkParams.tmName = ''
     trademarkParams.logoUrl = ''
+    // 第一种写法
+    // formRef?.value?.resetFields()
+    // 第二种写法
+    nextTick(() => {
+        formRef.value.clearValidate('tmName')
+        formRef.value.clearValidate('logoUrl')
+    })
 }
 //修改已有品牌按钮的回调
 // row:即为当前已有品牌
 const updateTradeMark = async (row: TradeMark) => {
+    // 清空校验规则错误提示信息
+    formRef?.value?.resetFields()
     // 打开对话框
     dialogFormVisible.value = true
     // ES6语法,将row的属性值赋值给trademarkParams
     Object.assign(trademarkParams, row)
-    // // 展示已有品牌的数据
-    // trademarkParams.id = row.id
-    // trademarkParams.tmName = row.tmName
-    // trademarkParams.logoUrl = row.logoUrl
 }
 // 对话框底部取消按钮的回调
 const cancel = () => {
@@ -184,7 +191,9 @@ const cancel = () => {
 }
 // 对话框底部确定按钮的回调
 const confirm = async () => {
-    // TODO 提交表单数据
+    // 在发表单之前,要对整个表单进行校验
+    // 调用此方法进行全部表单项校验,如果校验成功则返回true,否则返回false
+    await formRef?.value.validate()
     // 关闭对话框
     let result: any = await reqAddOrUpdateTradeMark(trademarkParams)
     // 添加品牌|修改品牌
@@ -223,12 +232,44 @@ const beforeAvatarUpload: UploadProps['beforeUpload'] = (rawFile) => {
         return false
     }
 }
+// 图片上传成功钩子
 const handleAvatarSuccess: UploadProps['onSuccess'] = (response) => {
     // response上传成功之后服务器返回的数据
     // uploadFile上传的文件
     trademarkParams.logoUrl = response.data
-    console.log(response.data)
+    // 图片上传成功,清除掉图片校验结果
+    formRef?.value?.clearValidate('logoUrl')
 }
+// 品牌名称自定义校验规则方法
+const validatorTmName = (rule: any, value: any, callBack: any) => {
+    // 自定义校验规则
+    // 品牌名称最小大于2位,
+    if (value.length >= 2) {
+        callBack()
+    } else {
+        // 校验失败,返回的错误提示信息
+        callBack(new Error('品牌名称长度必须大于2位'))
+    }
+}
+// 品牌Logo自定义校验规则方法
+const validatorLogoUrl = (rule: any, value: any, callBack: any) => {
+    // 自定义校验规则
+    // 品牌Logo地址不能为空
+    if (value) {
+        callBack()
+    } else {
+        // 校验失败,返回的错误提示信息
+        callBack(new Error('Logo图片务必上传'))
+    }
+}
+// 表单校验
+const rules = reactive<FormRules>({
+    // required:这个字段务必校验,表单前面出来五角星
+    // message: 提示信息
+    // trigger: 代表校验规则时机[blur:失去焦点时校验,change:选择完时校验]
+    tmName: [{ required: true, trigger: 'blur', validator: validatorTmName }],
+    logoUrl: [{ required: true, validator: validatorLogoUrl }]
+})
 </script>
 
 <style lang="scss" scoped>
