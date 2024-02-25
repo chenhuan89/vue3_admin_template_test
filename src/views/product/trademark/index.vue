@@ -94,10 +94,10 @@
 //引入组合式API函数ref,onMounted
 import { ref, onMounted, reactive } from 'vue'
 //引入商品管理api
-import { reqHasTradeMark } from '@/api/product/trademark'
+import { reqHasTradeMark, reqAddOrUpdateTradeMark } from '@/api/product/trademark'
 import { ElMessage } from 'element-plus'
 // 引入商品管理ts类型
-import type { Records, TradeMarkResponseData } from '@/api/product/trademark/type'
+import type { Records, TradeMarkResponseData, TradeMark } from '@/api/product/trademark/type'
 // 引入element上传组件类型
 import type { UploadProps } from 'element-plus'
 //当前页码
@@ -111,7 +111,7 @@ let trademarkArr = ref<Records>([])
 // 控制对话框显示与隐藏的属性
 let dialogFormVisible = ref<boolean>(false)
 // 定义收集新增品牌数据
-let trademarkParams = reactive({
+let trademarkParams = reactive<TradeMark>({
     tmName: '',
     logoUrl: ''
 })
@@ -131,6 +131,7 @@ const getHasTradeMark = async (pager = 1) => {
         trademarkArr.value = result.data.records
     }
 }
+//组件挂载完毕钩子---发一次请求,获取第一页、一页三个已有品牌数据
 onMounted(() => {
     getHasTradeMark()
 })
@@ -151,6 +152,9 @@ onMounted(() => {
 // 添加品牌按钮的回调
 const addTraderMark = () => {
     dialogFormVisible.value = true
+    // 数据清空
+    trademarkParams.tmName = ''
+    trademarkParams.logoUrl = ''
 }
 //修改已有品牌按钮的回调
 const updateTradeMark = () => {
@@ -163,10 +167,24 @@ const cancel = () => {
     dialogFormVisible.value = false
 }
 // 对话框底部确定按钮的回调
-const confirm = () => {
+const confirm = async () => {
     // TODO 提交表单数据
     // 关闭对话框
-    dialogFormVisible.value = false
+    let result: any = await reqAddOrUpdateTradeMark(trademarkParams)
+    console.log(trademarkParams)
+    console.log(result)
+    if (result.code === 200) {
+        // 添加品牌成功
+        dialogFormVisible.value = false
+        // 弹出提示信息
+        ElMessage.success('添加品牌成功')
+        // 获取品牌数据
+        getHasTradeMark()
+    } else {
+        // 添加品牌失败
+        ElMessage.error('添加品牌失败')
+        dialogFormVisible.value = false
+    }
 }
 // 上传图片组件-->上传图片之前的钩子函数
 const beforeAvatarUpload: UploadProps['beforeUpload'] = (rawFile) => {
@@ -187,7 +205,6 @@ const beforeAvatarUpload: UploadProps['beforeUpload'] = (rawFile) => {
         return false
     } else {
         ElMessage.error('上传的图片必须是JPG或PNG或GIF格式!')
-
         return false
     }
 }
