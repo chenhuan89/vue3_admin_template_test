@@ -26,8 +26,13 @@
                 <el-table-column prop="createTime" label="创建时间" align="center" />
                 <el-table-column prop="updateTime" label="修改时间" align="center" />
                 <el-table-column label="品牌操作" align="center">
-                    <template v-slot="">
-                        <el-button type="warning" size="small" icon="Edit" @click="updateTradeMark"></el-button>
+                    <template v-slot="scoped">
+                        <el-button
+                            type="warning"
+                            size="small"
+                            icon="Edit"
+                            @click="updateTradeMark(scoped.row)"
+                        ></el-button>
                         <el-button type="danger" size="small" icon="Delete"></el-button>
                     </template>
                 </el-table-column>
@@ -54,7 +59,7 @@
         </el-card>
         <!-- 对话框组件:添加与修改已有品牌的业务使用结构 -->
         <!-- v-model 属性用于控制对话框的显示与隐藏 true显示,false隐藏 -->
-        <el-dialog v-model="dialogFormVisible" title="添加品牌">
+        <el-dialog v-model="dialogFormVisible" :title="trademarkParams.id ? '修改商品' : '添加商品'">
             <el-form>
                 <el-form-item label="品牌名称" label-width="80px">
                     <el-input placeholder="请你输入品牌名称" v-model="trademarkParams.tmName"></el-input>
@@ -153,36 +158,46 @@ onMounted(() => {
 const addTraderMark = () => {
     dialogFormVisible.value = true
     // 数据清空
+    trademarkParams.id = undefined
     trademarkParams.tmName = ''
     trademarkParams.logoUrl = ''
 }
 //修改已有品牌按钮的回调
-const updateTradeMark = () => {
-    // console.log(row)
+// row:即为当前已有品牌
+const updateTradeMark = async (row: TradeMark) => {
+    // 打开对话框
     dialogFormVisible.value = true
-    // 把当前行的数据赋值给form
+    // ES6语法,将row的属性值赋值给trademarkParams
+    Object.assign(trademarkParams, row)
+    // // 展示已有品牌的数据
+    // trademarkParams.id = row.id
+    // trademarkParams.tmName = row.tmName
+    // trademarkParams.logoUrl = row.logoUrl
 }
 // 对话框底部取消按钮的回调
 const cancel = () => {
+    // 关闭对话框
     dialogFormVisible.value = false
+    // 数据清空
+    trademarkParams.tmName = ''
+    trademarkParams.logoUrl = ''
 }
 // 对话框底部确定按钮的回调
 const confirm = async () => {
     // TODO 提交表单数据
     // 关闭对话框
     let result: any = await reqAddOrUpdateTradeMark(trademarkParams)
-    console.log(trademarkParams)
-    console.log(result)
+    // 添加品牌|修改品牌
     if (result.code === 200) {
-        // 添加品牌成功
+        // 关闭对话框
         dialogFormVisible.value = false
         // 弹出提示信息
-        ElMessage.success('添加品牌成功')
+        ElMessage.success(trademarkParams.id ? '修改品牌成功' : '添加品牌成功')
         // 获取品牌数据
-        getHasTradeMark()
+        getHasTradeMark(trademarkParams.id ? pageNo.value : 1)
     } else {
         // 添加品牌失败
-        ElMessage.error('添加品牌失败')
+        ElMessage.error(trademarkParams.id ? '修改品牌失败' : '添加品牌失败')
         dialogFormVisible.value = false
     }
 }
