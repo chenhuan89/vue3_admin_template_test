@@ -2,11 +2,13 @@
 import SvgIcon from './SvgIcon/index.vue'
 // 导入Pagination组件
 import Pagination from './Pagination/index.vue'
+// 导入Category组件
+import Category from './Category/index.vue'
 //引入element-plus-icons
 import * as ElIcons from '@element-plus/icons-vue'
 import type { App, Component } from 'vue'
 
-const allGlobalComponent: GlobalComponents = { SvgIcon, Pagination }
+const allGlobalComponent: GlobalComponents = { SvgIcon, Pagination, Category }
 
 interface GlobalComponents {
     [key: string]: Component
