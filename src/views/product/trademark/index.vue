@@ -33,7 +33,17 @@
                             icon="Edit"
                             @click="updateTradeMark(scoped.row)"
                         ></el-button>
-                        <el-button type="danger" size="small" icon="Delete"></el-button>
+                        <el-popconfirm
+                            :title="`确认删除品牌名称:${scoped.row.tmName}?`"
+                            width="250px"
+                            icon="Delete"
+                            icon-color="red"
+                            @confirm="removeTradeMark(scoped.row.id)"
+                        >
+                            <template #reference>
+                                <el-button type="danger" size="small" icon="Delete"></el-button>
+                            </template>
+                        </el-popconfirm>
                     </template>
                 </el-table-column>
             </el-table>
@@ -99,7 +109,7 @@
 //引入组合式API函数ref,onMounted
 import { ref, onMounted, reactive, nextTick } from 'vue'
 //引入商品管理api
-import { reqHasTradeMark, reqAddOrUpdateTradeMark } from '@/api/product/trademark'
+import { reqHasTradeMark, reqAddOrUpdateTradeMark, reqDeleteTradeMark } from '@/api/product/trademark'
 import { ElMessage } from 'element-plus'
 // 引入商品管理ts类型
 import type { Records, TradeMarkResponseData, TradeMark } from '@/api/product/trademark/type'
@@ -159,6 +169,7 @@ onMounted(() => {
 // 添加品牌按钮的回调
 const addTraderMark = () => {
     dialogFormVisible.value = true
+    getHasTradeMark(trademarkArr.value.length > 1 ? pageNo.value : pageNo.value - 1)
     // 数据清空
     trademarkParams.id = undefined
     trademarkParams.tmName = ''
@@ -270,6 +281,19 @@ const rules = reactive<FormRules>({
     tmName: [{ required: true, trigger: 'blur', validator: validatorTmName }],
     logoUrl: [{ required: true, validator: validatorLogoUrl }]
 })
+// 气泡确认框按钮回调
+const removeTradeMark = async (id: number) => {
+    // 点击确认按钮删除已有品牌请求
+    let result = await reqDeleteTradeMark(id)
+    if (result.code == 200) {
+        // 提示信息
+        ElMessage.success('删除成功')
+        // 删除成功,重新获取品牌列表数据
+        getHasTradeMark(trademarkArr.value.length > 1 ? pageNo.value : pageNo.value - 1)
+    } else {
+        ElMessage.error('删除失败')
+    }
+}
 </script>
 
 <style lang="scss" scoped>

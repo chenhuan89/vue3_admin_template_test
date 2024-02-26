@@ -12,7 +12,9 @@ enum API {
     // 添加品牌
     ADDTRDEMARK_URL = '/admin/product/baseTrademark/save',
     // 修改已有品牌
-    UPDATETRDEMARK_URL = '/admin/product/baseTrademark/update'
+    UPDATETRDEMARK_URL = '/admin/product/baseTrademark/update',
+    // 删除已有品牌
+    DELETE_URL = '/admin/product/baseTrademark/remove/'
 }
 
 //获取已有品牌的接口方法
@@ -34,3 +36,5 @@ export const reqAddOrUpdateTradeMark = (data: TradeMark) => {
         return request.post<any, any>(API.ADDTRDEMARK_URL, data)
     }
 }
+// 删除已有品牌的数据
+export const reqDeleteTradeMark = (id: number) => request.delete<any, any>(`${API.DELETE_URL}${id}`)
