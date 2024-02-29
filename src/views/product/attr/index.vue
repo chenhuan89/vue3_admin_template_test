@@ -21,9 +21,10 @@
 <style lang="scss" scoped>
 .attr_low {
     .el-card {
-        margin: 10px 0px;
+        margin: 10px 0;
+
         .el-table {
-            margin: 10px 0px;
+            margin: 10px 0;
         }
     }
 }
