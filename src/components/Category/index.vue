@@ -17,7 +17,7 @@
                     ></el-option>
                 </el-select>
             </el-form-item>
-            <!-- <el-form-item label="二级分类">
+            <el-form-item label="二级分类">
                 <el-select>
                     <el-option label="123"></el-option>
                     <el-option label="457"></el-option>
@@ -30,7 +30,7 @@
                     <el-option label="457"></el-option>
                     <el-option label="888"></el-option>
                 </el-select>
-            </el-form-item> -->
+            </el-form-item>
         </el-form>
     </el-card>
 </template>
