@@ -5,7 +5,9 @@
     </div>
     <div class="attr_low">
         <el-card>
-            <el-button type="primary" size="default" icon="Plus">添加属性</el-button>
+            <el-button type="primary" size="default" icon="Plus" :disabled="categoryStore.c3Id ? false : true">
+                添加属性
+            </el-button>
             <el-table border>
                 <el-table-column label="序号" type="index" align="center" width="80px"></el-table-column>
                 <el-table-column label="属性名称" width="120px" align="center"></el-table-column>
@@ -16,7 +18,11 @@
     </div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+// 获取分类的仓库
+import useCategoryStore from '@/store/modules/category'
+const categoryStore = useCategoryStore()
+</script>
 
 <style lang="scss" scoped>
 .attr_low {

@@ -1,6 +1,7 @@
 <template>
     <template v-for="item in menuList" :key="item.path">
         <!-- 没有子路由 -->
+
         <template v-if="item.children && item.children.length == 1">
             <el-menu-item :index="item.children[0].path" v-if="!item.children[0].meta.hidden" @click="goRoute">
                 <!-- 添加icon图标 -->
@@ -12,6 +13,7 @@
                 </template>
             </el-menu-item>
         </template>
+
         <!-- 有子路由且只有一个子路由 -->
         <el-sub-menu v-if="item.children && item.children.length > 1" :index="item.path">
             <template #title>
@@ -22,9 +24,11 @@
                 <span>{{ item.meta.title }}</span>
             </template>
             <!-- 递归调用-->
+
             <Menu_ :menuList="item.children" />
         </el-sub-menu>
         <!-- 有子路由且有多个子路由 -->
+
         <template v-if="!item.children">
             <el-menu-item :index="item.path" v-if="!item.meta.hidden" @click="goRoute">
                 <!-- 添加icon图标 -->

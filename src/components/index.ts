@@ -6,13 +6,9 @@ import Pagination from './Pagination/index.vue'
 import Category from './Category/index.vue'
 //引入element-plus-icons
 import * as ElIcons from '@element-plus/icons-vue'
-import type { App, Component } from 'vue'
+import type { App } from 'vue'
 
-const allGlobalComponent: GlobalComponents = { SvgIcon, Pagination, Category }
-
-interface GlobalComponents {
-    [key: string]: Component
-}
+const allGlobalComponent: any = { SvgIcon, Pagination, Category }
 
 //对外暴露插件对象
 export default {
