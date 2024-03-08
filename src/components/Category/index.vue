@@ -40,7 +40,6 @@
         </el-form>
     </el-card>
 </template>
-<!-- 视频67p 23:48 -->
 <script setup lang="ts">
 //引入组件挂载完毕的法法
 import { onMounted } from 'vue'
