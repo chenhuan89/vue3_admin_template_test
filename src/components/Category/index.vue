@@ -4,9 +4,9 @@
             <el-cascader v-model="value" :options="options" @change="handleChange" /> -->
         <el-form :inline="true">
             <el-form-item label="一级分类">
-                <el-select v-model="categoryStore.c1Id" @change="handlerC1">
+                <el-select :disabled="scene != 0" v-model="categoryStore.c1Id" @change="handlerC1">
                     <!-- option组件
-                        label:即为显示的属性 
+                        label:即为显示的属性
                         value:即为select下拉菜单收集的数据
                      -->
                     <el-option
@@ -18,7 +18,7 @@
                 </el-select>
             </el-form-item>
             <el-form-item label="二级分类">
-                <el-select v-model="categoryStore.c2Id" @change="handlerC2">
+                <el-select :disabled="scene != 0" v-model="categoryStore.c2Id" @change="handlerC2">
                     <el-option
                         v-for="c2 in categoryStore.c2Arr"
                         :key="c2.id"
@@ -28,7 +28,7 @@
                 </el-select>
             </el-form-item>
             <el-form-item label="三级分类">
-                <el-select v-model="categoryStore.c3Id">
+                <el-select :disabled="scene != 0" v-model="categoryStore.c3Id">
                     <el-option
                         v-for="c3 in categoryStore.c3Arr"
                         :key="c3.id"
@@ -74,6 +74,8 @@ const handlerC2 = () => {
     // 通知仓库获取三级分类数据
     categoryStore.getC3()
 }
+// 接受父组件传递过来scene
+defineProps(['scene'])
 </script>
 
 <style lang="scss" scoped>
