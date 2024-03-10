@@ -50,7 +50,7 @@
 <!-- p69 -->
 <script setup lang="ts">
 // 引入组合是api函数watch
-import { watch, ref } from 'vue'
+import { watch, ref, reactive } from 'vue'
 // 引入获取已有属性与属性值接口
 import { reqAttr } from '@/api/product/attr'
 // 引入已有属性及属性值数据ts类型
@@ -64,6 +64,15 @@ const attrArr = ref<Attr[]>([])
 // 定义卡片组件内容切换的变量
 //scene=0,显示table,scene=1,显示添加属性与属性值
 let scene = ref<number>(0)
+// 收集新增的属性的数据
+let attrParams = reactive<Attr>({
+    attrName: '', //新增的属性名称
+    attrValueList: [
+        //新增的属性值数组
+    ],
+    categoryId: '', //三级分类的ID
+    categoryLevel: 3 //代表的是三级分类
+})
 // 监听仓库三级分类id的变化
 watch(
     () => categoryStore.c3Id,

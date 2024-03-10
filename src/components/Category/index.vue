@@ -1,7 +1,5 @@
 <template>
     <el-card>
-        <!-- <span>请选择商品信息</span>
-            <el-cascader v-model="value" :options="options" @change="handleChange" /> -->
         <el-form :inline="true">
             <el-form-item label="一级分类">
                 <el-select :disabled="scene != 0" v-model="categoryStore.c1Id" @change="handlerC1">
