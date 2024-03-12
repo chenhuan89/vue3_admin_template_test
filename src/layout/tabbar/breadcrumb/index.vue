@@ -25,10 +25,12 @@
 <script setup lang="ts" name="Breadcrumb">
 //获取layout相关的仓库
 import useLayoutSettingStore from '@/store/modules/setting'
+
 const LayoutSettingStore = useLayoutSettingStore()
 
 //引入路由对象
 import { useRoute } from 'vue-router'
+
 let $route = useRoute()
 //点击图标的方法
 const changeIcon = () => {
@@ -39,6 +41,6 @@ const changeIcon = () => {
 
 <style lang="scss" scoped>
 span {
-    margin: 0px 5px;
+    margin: 0 5px;
 }
 </style>

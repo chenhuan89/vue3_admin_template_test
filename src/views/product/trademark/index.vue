@@ -75,7 +75,7 @@
                     <el-input placeholder="请你输入品牌名称" v-model="trademarkParams.tmName"></el-input>
                 </el-form-item>
                 <el-form-item label="品牌LOGO" label-width="100px" prop="logoUrl">
-                    <!-- 
+                    <!--
                         el-upload 组件上传图片
                         action 属性设置上传图片的地址 代理服务器需要带上/api
                         :show-file-list 属性设置是否显示上传图片的列表
@@ -89,7 +89,7 @@
                         :on-success="handleAvatarSuccess"
                         :before-upload="beforeAvatarUpload"
                     >
-                        <img v-if="trademarkParams.logoUrl" :src="trademarkParams.logoUrl" class="avatar" />
+                        <img v-if="trademarkParams.logoUrl" :src="trademarkParams.logoUrl" class="avatar" alt="" />
                         <el-icon v-else class="avatar-uploader-icon">
                             <UploadFilled />
                         </el-icon>
